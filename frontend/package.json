@@ -1,0 +1,9 @@
+{
+  "name": "petcarebook-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PetCareBook - Pet Vaccination Reminder System frontend (HTML/CSS/Vanilla JS)",
+  "scripts": {
+    "build": "node -e \"const fs=require('fs');['index.html','style.css','script.js'].forEach(f=>{if(!fs.existsSync(f))throw new Error(f+' missing')});console.log('Build OK: all files present')\""
+  }
+}

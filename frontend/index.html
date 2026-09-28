@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetCareBook – Pet Vaccination Reminder System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+</head>
+  <body>
+    <!-- ============ TOAST NOTIFICATION ============ -->
+    <div id="toast" class="toast hidden" role="alert"></div>
+
+    <!-- ============ LOGIN SECTION ============ -->
+    <section id="loginSection" class="login-section">
+      <div class="login-left">
+        <div class="login-brand">
+          <svg class="login-logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="6" cy="8" r="2.2" fill="currentColor" opacity="0.85"/>
+            <circle cx="18" cy="8" r="2.2" fill="currentColor" opacity="0.85"/>
+            <circle cx="9" cy="5" r="1.8" fill="currentColor" opacity="0.7"/>
+            <circle cx="15" cy="5" r="1.8" fill="currentColor" opacity="0.7"/>
+            <path d="M12 11c-3 0-5 2.5-5 5 0 2 1.5 3 3 3h4c1.5 0 3-1 3-3 0-2.5-2-5-5-5z" fill="currentColor"/>
+          </svg>
+          <span class="login-brand-name">PetCareBook</span>
+        </div>
+        <h1 class="login-headline">Pet Vaccination Reminder System</h1>
+        <p class="login-subtext">
+          Keep your pets healthy and up to date. Manage owners, pets, vaccine types,
+          and vaccination records — all in one clean dashboard. Never miss a due date again.
+        </p>
+        <ul class="login-features">
+          <li><span class="feature-dot"></span> Track complete vaccination history per pet</li>
+          <li><span class="feature-dot"></span> Automatic next-due-date calculation</li>
+          <li><span class="feature-dot"></span> Alerts for vaccinations due within 7 days</li>
+        </ul>
+      </div>
+      <div class="login-right">
+        <div class="login-card">
+          <h2 class="login-card-title">Sign In</h2>
+          <p class="login-card-subtitle">Welcome back. Please sign in to continue.</p>
+          <form id="loginForm" class="login-form" novalidate>
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" />
+            </div>
+            <div id="loginError" class="field-error hidden"></div>
+            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          </form>
+          <div class="demo-credentials">
+            <span class="demo-label">Demo credentials</span>
+            <span class="demo-value">admin@petcarebook.com / admin123</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ APP SHELL ============ -->
+    <div id="appShell" class="app-shell hidden">
+      <!-- SIDEBAR -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <svg class="sidebar-logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="6" cy="8" r="2.2" fill="currentColor" opacity="0.85"/>
+            <circle cx="18" cy="8" r="2.2" fill="currentColor" opacity="0.85"/>
+            <circle cx="9" cy="5" r="1.8" fill="currentColor" opacity="0.7"/>
+            <circle cx="15" cy="5" r="1.8" fill="currentColor" opacity="0.7"/>
+            <path d="M12 11c-3 0-5 2.5-5 5 0 2 1.5 3 3 3h4c1.5 0 3-1 3-3 0-2.5-2-5-5-5z" fill="currentColor"/>
+          </svg>
+          <div class="sidebar-title-group">
+            <span class="sidebar-title">PetCareBook</span>
+            <span class="sidebar-subtitle">Pet Vaccination System</span>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-section="dashboardSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="#" class="nav-item" data-section="ownersSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Owners</span>
+          </a>
+          <a href="#" class="nav-item" data-section="petsSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M17.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M8 8c-2.5 0-4 2-4 4 0 1.5 1 2 2 2h1l1.5 4h5L15 14h1c1 0 2-.5 2-2 0-2-1.5-4-4-4z"/></svg>
+            <span>Pets</span>
+          </a>
+          <a href="#" class="nav-item" data-section="vaccinesSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5l-1.5-1.5a3 3 0 0 0-4 0L4 13v7h7l9-9a3 3 0 0 0 0-4z"/><line x1="9" y1="15" x2="15" y2="9"/></svg>
+            <span>Vaccines</span>
+          </a>
+          <a href="#" class="nav-item" data-section="vaccinationsSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6l-4 4v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8l-4-4V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+            <span>Vaccinations</span>
+          </a>
+          <a href="#" class="nav-item" data-section="dueSoonSection">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Due Soon</span>
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="#" class="nav-item nav-logout" id="logoutBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+      <div id="sidebarOverlay" class="sidebar-overlay hidden"></div>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h2 id="pageTitle" class="topbar-title">Dashboard</h2>
+        </header>
+
+        <div class="content-area">
+          <!-- ============ DASHBOARD SECTION ============ -->
+          <section id="dashboardSection" class="page-section">
+            <div class="dashboard-greeting">
+             
+              <p class="section-subtitle">PetCareBook Dashboard</p>
+            </div>
+            <div class="summary-cards">
+              <div class="summary-card">
+                <div class="summary-icon icon-blue">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="summary-body">
+                  <span class="summary-label">Total Owners</span>
+                  <span class="summary-value" id="statOwners">—</span>
+                </div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-icon icon-teal">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M17.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M8 8c-2.5 0-4 2-4 4 0 1.5 1 2 2 2h1l1.5 4h5L15 14h1c1 0 2-.5 2-2 0-2-1.5-4-4-4z"/></svg>
+                </div>
+                <div class="summary-body">
+                  <span class="summary-label">Total Pets</span>
+                  <span class="summary-value" id="statPets">—</span>
+                </div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-icon icon-green">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5l-1.5-1.5a3 3 0 0 0-4 0L4 13v7h7l9-9a3 3 0 0 0 0-4z"/><line x1="9" y1="15" x2="15" y2="9"/></svg>
+                </div>
+                <div class="summary-body">
+                  <span class="summary-label">Vaccine Types</span>
+                  <span class="summary-value" id="statVaccines">—</span>
+                </div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-icon icon-amber">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="summary-body">
+                  <span class="summary-label">Due Within 7 Days</span>
+                  <span class="summary-value" id="statDueSoon">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-grid">
+              <div class="dashboard-panel">
+                <div class="panel-header">
+                  <h4>Upcoming Vaccinations</h4>
+                </div>
+                <div id="dashboardDueSoon" class="panel-body">
+                  <p class="loading-text">Loading...</p>
+                </div>
+              </div>
+
+              <div class="dashboard-panel">
+                <div class="panel-header">
+                  <h4>Quick Actions</h4>
+                </div>
+                <div class="panel-body quick-actions">
+                  <button class="action-btn" data-action="addOwner">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    <span>Add Owner</span>
+                  </button>
+                  <button class="action-btn" data-action="registerPet">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M17.5 6a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/><path d="M8 8c-2.5 0-4 2-4 4 0 1.5 1 2 2 2h1l1.5 4h5L15 14h1c1 0 2-.5 2-2 0-2-1.5-4-4-4z"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    <span>Register Pet</span>
+                  </button>
+                  <button class="action-btn" data-action="addVaccine">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5l-1.5-1.5a3 3 0 0 0-4 0L4 13v7h7l9-9a3 3 0 0 0 0-4z"/><line x1="9" y1="15" x2="15" y2="9"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    <span>Add Vaccine</span>
+                  </button>
+                  <button class="action-btn" data-action="recordVaccination">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6l-4 4v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8l-4-4V2"/><line x1="9" y1="2" x2="15" y2="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                    <span>Record Vaccination</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="dashboard-panel dashboard-panel-wide">
+                <div class="panel-header">
+                  <h4>Recent Vaccination Activity</h4>
+                </div>
+                <div class="panel-body">
+                  <p class="hint-text">Select a pet from the Pets page and click "View History" to see vaccination records.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ OWNERS SECTION ============ -->
+          <section id="ownersSection" class="page-section hidden">
+            <div class="section-header">
+              <div>
+                <h3>Owners</h3>
+                <p class="section-subtitle">Manage pet owner records</p>
+              </div>
+              <button class="btn btn-primary" data-action="addOwner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Owner
+              </button>
+            </div>
+            <div class="toolbar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="ownerSearch" placeholder="Search by owner name..." />
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th class="col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ownersTableBody">
+                  <tr><td colspan="4" class="loading-text">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ============ PETS SECTION ============ -->
+          <section id="petsSection" class="page-section hidden">
+            <div class="section-header">
+              <div>
+                <h3>Pets</h3>
+                <p class="section-subtitle">Manage pet records and vaccination history</p>
+              </div>
+              <button class="btn btn-primary" data-action="registerPet">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Register Pet
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Pet Name</th>
+                    <th>Species</th>
+                    <th>Breed</th>
+                    <th>Date of Birth</th>
+                    <th>Owner</th>
+                    <th class="col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="petsTableBody">
+                  <tr><td colspan="6" class="loading-text">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ============ VACCINES SECTION ============ -->
+          <section id="vaccinesSection" class="page-section hidden">
+            <div class="section-header">
+              <div>
+                <h3>Vaccines</h3>
+                <p class="section-subtitle">Manage vaccine types and intervals</p>
+              </div>
+              <button class="btn btn-primary" data-action="addVaccine">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Vaccine
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Vaccine Name</th>
+                    <th>Standard Interval</th>
+                    <th class="col-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="vaccinesTableBody">
+                  <tr><td colspan="3" class="loading-text">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- ============ VACCINATIONS SECTION ============ -->
+          <section id="vaccinationsSection" class="page-section hidden">
+            <div class="section-header">
+              <div>
+                <h3>Vaccinations</h3>
+                <p class="section-subtitle">Record a new vaccination</p>
+              </div>
+            </div>
+            <div class="form-card">
+              <form id="vaccinationForm" class="entity-form" novalidate>
+                <div class="form-group">
+                  <label for="vaccPetSelect">Select Pet</label>
+                  <select id="vaccPetSelect"></select>
+                </div>
+                <div class="form-group">
+                  <label for="vaccVaccineSelect">Select Vaccine</label>
+                  <select id="vaccVaccineSelect"></select>
+                </div>
+                <div class="form-group">
+                  <label for="vaccDateGiven">Date Given</label>
+                  <input type="date" id="vaccDateGiven" />
+                </div>
+                <div id="vaccFormError" class="field-error hidden"></div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary" id="vaccSubmitBtn">Record Vaccination</button>
+                </div>
+              </form>
+              <div id="vaccResult" class="vacc-result hidden">
+                <div class="vacc-result-header">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <span>Vaccination recorded successfully.</span>
+                </div>
+                <div class="vacc-result-grid" id="vaccResultGrid"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============ DUE SOON SECTION ============ -->
+          <section id="dueSoonSection" class="page-section hidden">
+            <div class="section-header">
+              <div>
+                <h3>Due Soon</h3>
+                <p class="section-subtitle">Vaccinations due within the next 7 days</p>
+              </div>
+            </div>
+            <div id="dueSoonContent">
+              <p class="loading-text">Loading...</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ============ OWNER MODAL ============ -->
+    <div id="ownerModal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h4 id="ownerModalTitle">Add Owner</h4>
+          <button class="modal-close" data-close="ownerModal" aria-label="Close">&times;</button>
+        </div>
+        <form id="ownerForm" class="entity-form" novalidate>
+          <input type="hidden" id="ownerId" />
+          <div class="form-group">
+            <label for="ownerName">Name</label>
+            <input type="text" id="ownerName" placeholder="Full name" />
+            <span class="field-error hidden" id="ownerNameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="ownerPhone">Phone</label>
+            <input type="text" id="ownerPhone" placeholder="Phone number" />
+            <span class="field-error hidden" id="ownerPhoneError"></span>
+          </div>
+          <div class="form-group">
+            <label for="ownerEmail">Email</label>
+            <input type="email" id="ownerEmail" placeholder="email@example.com" />
+            <span class="field-error hidden" id="ownerEmailError"></span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-close="ownerModal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="ownerSubmitBtn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ PET MODAL ============ -->
+    <div id="petModal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h4 id="petModalTitle">Register Pet</h4>
+          <button class="modal-close" data-close="petModal" aria-label="Close">&times;</button>
+        </div>
+        <form id="petForm" class="entity-form" novalidate>
+          <input type="hidden" id="petId" />
+          <div class="form-group">
+            <label for="petName">Pet Name</label>
+            <input type="text" id="petName" placeholder="Pet name" />
+            <span class="field-error hidden" id="petNameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="petSpecies">Species</label>
+            <input type="text" id="petSpecies" placeholder="e.g. Dog, Cat, Rabbit" />
+            <span class="field-error hidden" id="petSpeciesError"></span>
+          </div>
+          <div class="form-group">
+            <label for="petBreed">Breed</label>
+            <input type="text" id="petBreed" placeholder="Breed (optional)" />
+          </div>
+          <div class="form-group">
+            <label for="petDob">Date of Birth</label>
+            <input type="date" id="petDob" />
+            <span class="field-error hidden" id="petDobError"></span>
+          </div>
+          <div class="form-group">
+            <label for="petOwnerSelect">Owner</label>
+            <select id="petOwnerSelect"></select>
+            <span class="field-error hidden" id="petOwnerError"></span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-close="petModal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="petSubmitBtn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ VACCINE MODAL ============ -->
+    <div id="vaccineModal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h4 id="vaccineModalTitle">Add Vaccine</h4>
+          <button class="modal-close" data-close="vaccineModal" aria-label="Close">&times;</button>
+        </div>
+        <form id="vaccineForm" class="entity-form" novalidate>
+          <input type="hidden" id="vaccineId" />
+          <div class="form-group">
+            <label for="vaccineName">Vaccine Name</label>
+            <input type="text" id="vaccineName" placeholder="e.g. Rabies" />
+            <span class="field-error hidden" id="vaccineNameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="vaccineInterval">Interval in Days</label>
+            <input type="number" id="vaccineInterval" placeholder="e.g. 365" min="1" />
+            <span class="field-error hidden" id="vaccineIntervalError"></span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" data-close="vaccineModal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="vaccineSubmitBtn">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ VACCINATION HISTORY MODAL ============ -->
+    <div id="historyModal" class="modal-overlay hidden">
+      <div class="modal modal-lg">
+        <div class="modal-header">
+          <h4 id="historyModalTitle">Vaccination History</h4>
+          <button class="modal-close" data-close="historyModal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body" id="historyModalBody">
+          <p class="loading-text">Loading...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CONFIRM DELETE MODAL ============ -->
+    <div id="confirmModal" class="modal-overlay hidden">
+      <div class="modal modal-sm">
+        <div class="modal-header">
+          <h4>Confirm Delete</h4>
+          <button class="modal-close" data-close="confirmModal" aria-label="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirmMessage">Are you sure you want to delete this record?</p>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-close="confirmModal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
